@@ -27,5 +27,8 @@ unsigned int stu_strlen(const char *str);
 char *stu_strcpy(char *dest, const char *src);
 char *stu_strdup(const char *src);
 int stu_puts(const char *str);
+void *stu_memmove(void *dest,
+                  const void *src,
+                  unsigned int n);
 
 #endif

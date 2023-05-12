@@ -16,5 +16,5 @@ char *stu_strcpy(char *dest, const char *src)
         m = m + 1;
     }
     dest[m] = '\0';
-    return dest;
+    return (dest);
 }

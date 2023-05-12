@@ -18,7 +18,9 @@ void split_prune(char **sp, int (*predicate)(const char *)) {
         if (predicate(sp[i])) {
             free(sp[i]);
         } else {
-            sp[j] = sp[i];
+            if (i != j) {
+                stu_memmove(sp + j, sp + i, sizeof(char *) * (i - j));
+            }
             j += 1;
         }
         i += 1;

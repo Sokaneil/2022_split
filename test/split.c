@@ -13,10 +13,11 @@ Test(split, simple)
 {
     char **sp;
 
-    sp = split("hello;world", ';');
+    sp = split("hello;world;", ';');
     cr_assert(sp);
     cr_assert_str_eq(sp[0], "hello");
     cr_assert_str_eq(sp[1], "world");
-    cr_assert_not(sp[2]);
+    cr_assert_str_eq(sp[2], "");
+    cr_assert_not(sp[3]);
     split_delete(sp);
 }

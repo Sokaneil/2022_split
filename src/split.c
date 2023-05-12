@@ -33,7 +33,7 @@ char **split(const char *str, char token)
     int i;
 
     count = count_tokens(str, token);
-    result = malloc(sizeof(char *) * (count + 1));
+    result = malloc(sizeof(char *) * (count + 2));
     i = 0;
     tmp = stu_strdup(str);
     pos = tmp;

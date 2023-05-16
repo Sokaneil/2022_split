@@ -16,5 +16,5 @@ unsigned int stu_strlen(const char *str)
     while (str[i] != '\0') {
         i = i + 1;
     }
-    return i;
+    return (i);
 }

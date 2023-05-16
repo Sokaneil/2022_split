@@ -10,7 +10,7 @@
 
 static int count_tokens(const char *str, char token)
 {
-    int count = 0;
+    int count;
     char *ptr;
 
     count = 0;

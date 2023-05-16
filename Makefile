@@ -4,25 +4,36 @@
 # 1st author:  sokaneil.sieng - sokaneil.sieng
 # description: Makefile
 
-NAME	=	libsplit.a
+PROJ		=	libsplit.a
 
-SRCS	=	$(shell find src/ -name "*.c")
+NAME		=	$(PROJ).out
 
-OBJS	=	$(SRCS:.c=.o)
+ARCH_NAME	=	$(PROJ).a
 
-NAME_TEST	=	test.out
+MAIN		=	src/main.c
 
-SRCS_TEST	=	$(shell find test/ -name "*.c")
+SRCS		=	$(shell find src/ -name "*.c" ! -name "main.c" ! -name "*#*")
 
-OBJS_TEST	=	$(SRCS_TEST:.c=.o)
+OBJS		=	$(SRCS:.c=.o)
 
-CFLAGS	+=	-W -Wall -Wextra -Werror -Iinclude/
+MAIN_OBJ	=	$(MAIN:.c=.o)
 
-LDFLAGS	+=
+TTNAME		=	test.out
 
-RM	=	rm -vf
+TTSRCS		=	$(shell find test/ -name "*.c")
 
-CC	:=	gcc
+TTOBJS		=	$(TTSRCS:.c=.o)
+
+IFLAGS		=	-Iinclude/ -Imemuse/include/
+
+CFLAGS		+=	-W -Wall -Wextra -Werror $(IFLAGS)
+
+LDFLAGS		+=
+
+CC			:=	gcc
+
+ARRC		:=	ar rc
+
 
 ifdef RELEASE
 CFLAGS += -O2
@@ -32,31 +43,43 @@ ifdef DEBUG
 CFLAGS += -g
 endif
 
-all: $(NAME)
+%.o: %.c
+	@printf	"[\033[0;36mCompilation\033[0m]% 36s\r" $<  | tr " " "."
+	@$(CC) -c -o $@ $< $(CFLAGS)
+	@printf "[\033[0;32mCompiled\033[0m]% 40s\n" $< | tr " " "."
 
-$(NAME): $(OBJS)
-	ar rc $(NAME) $(OBJS)
+all:$(PROJ)
 
-$(NAME_TEST): $(OBJS) $(OBJS_TEST)
-	$(CC) -o $(NAME_TEST) $(OBJS) $(OBJS_TEST) -lcriterion
+$(PROJ):$(OBJS) $(MAIN_OBJ)
+	@printf "\033[0;36mObjets Compilés avec Succès!\033[0m\n"
+	$(ARRC) $(ARCH_NAME) $(OBJS)
+	@printf "\033[0;36mArchive Compilés avec Succès!\033[0m\n"
 
-save:
-	git status
-	git add *
-	git commit -m "SPLIT"
-	git push
+$(NAME): $(PROJ)
+	$(CC) -o $(NAME) $(MAIN_OBJ)  $(OBJS) $(LDFLAGS)
+	@printf "\033[1;32m%s Compilés avec Succès!\033[0m\n\n" $(NAME)
 
-test:
-	$(CC) $(CFLAGS)
+#$(NAME):$(OBJS)
+#	@printf "\033[0;36mObjets Compilés avec Succès!\033[0m\n"
+#	$(CC) $(OBJS) $(CFLAGS) $(LDFLAGS) -o $(NAME)
+#	@printf "\033[1;32mCompilation finie  avec Succès!\033[0m\n"
 
-clear:
-	rm src/*.c~ include/*.h~ test/*.c~ Makefile~
+$(TTNAME):$(OBJS) $(TTOBJS)
+	@printf "\033[0;36mObjets Compilés avec Succès!\033[0m\n"
+	$(CC) -o $(TTNAME) $(TTOBJS) $(OBJS) $(LDFLAGS) -lcriterion
+	@printf "\033[1;32mTests Compilés avec Succès!\033[0m\n"
+
+RVM	=	rm -vf
+
+RM	=	rm -f
 
 clean:
-	@$(RM) $(OBJS) $(OBJS_TEST)
+	@printf "[\033[31mSuppression\033[m][Objets]% 28d\n" `$(RVM) $(OBJS) $(MAIN_OBJ) $(TTOBJS) | wc -l` | tr " " "."
 
 fclean: clean
-	@$(RM) $(NAME) $(NAME_TEST)
+	@printf "[\033[31mSuppression\033[m][Exe]% 31s\n" `$(RM) $(NAME)` '$(NAME)' | tr " " "."
+	@printf "[\033[31mSuppression\033[m][Tests]% 29s\n" `$(RM) $(TTNAME)` '$(TTNAME)' | tr " " "."
+	@printf "[\033[31mSuppression\033[m][Archive]% 27s\n" `$(RM) $(ARCH_NAME)` '$(ARCH_NAME)' | tr " " "."
 
 re: fclean all
 

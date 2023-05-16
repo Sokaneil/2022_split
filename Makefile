@@ -1,5 +1,5 @@
 # E89 Pedagogical & Technical Lab
-# project:     tp_getline
+# project:     Split
 # created on:  2023-02-21 - 09:40 +0100
 # 1st author:  sokaneil.sieng - sokaneil.sieng
 # description: Makefile

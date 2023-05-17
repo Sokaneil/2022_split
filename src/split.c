@@ -11,15 +11,13 @@
 static int count_tokens(const char *str, char token)
 {
     int count;
-    char *ptr;
 
     count = 0;
-    ptr = stu_strdup(str);
-    while (*ptr) {
-        if (*ptr == token) {
+    while (*str) {
+        if (*str == token) {
             count += 1;
         }
-        ptr += 1;
+        str += 1;
     }
     return (count + 1);
 }
@@ -27,6 +25,7 @@ static int count_tokens(const char *str, char token)
 char **split(const char *str, char token)
 {
     char **result;
+    char *copied_str;
     char *pos;
     char *tmp;
     int count;
@@ -35,7 +34,8 @@ char **split(const char *str, char token)
     count = count_tokens(str, token);
     result = malloc(sizeof(char *) * (count + 2));
     i = 0;
-    tmp = stu_strdup(str);
+    copied_str = stu_strdup(str);
+    tmp = copied_str;
     pos = tmp;
     while (*pos) {
         if (*pos == token) {
@@ -48,5 +48,6 @@ char **split(const char *str, char token)
     }
     result[i] = stu_strdup(tmp);
     result[i + 1] = NULL;
+    free(copied_str);
     return (result);
 }

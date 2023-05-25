@@ -19,6 +19,7 @@ Test(split, simple)
     cr_assert_str_eq(sp[1], "world");
     cr_assert_str_eq(sp[2], "hel");
     cr_assert_not(sp[3]);
+    split_print(sp);
     split_delete(sp);
 }
 
@@ -32,6 +33,7 @@ Test(split, double_tokens)
     cr_assert_str_eq(sp[1], "");
     cr_assert_str_eq(sp[2], "world");
     cr_assert_not(sp[3]);
+    split_print(sp);
     split_delete(sp);
 }
 
@@ -45,5 +47,6 @@ Test(split, spaces)
     cr_assert_str_eq(sp[1], "world  ");
     cr_assert_str_eq(sp[2], "hel");
     cr_assert_not(sp[3]);
+    split_print(sp);
     split_delete(sp);
 }
